@@ -1,3 +1,4 @@
+from statistics import mode
 import streamlit as st
 import pandas as pd
 import os
@@ -128,6 +129,22 @@ def main():
                         y_p = b1[0]*pred1+b0
                         st.write('El valor que se predijo es :')
                         st.write(y_p)
+                    elif(model == 'Regresion Polinomial'):
+                        if grado is not None:
+                            cx = np.asarray(df[c_x]).reshape(-1,1)
+                            cy = df[c_y]
+                            polgra = PolynomialFeatures(degree=int(grado))
+                            x_t = polgra.fit_transform(cx)
+                            regre_lineal.fit(x_t, cy)
+                            y_pred = regre_lineal.predict(x_t)
+                            aux = 0
+                            coer = regre_lineal.coef_
+                            tam = len(regre_lineal.coef_)-1
+                            while tam >= 0:
+                                aux = aux + round((coer[tam]),0)*int(pred)**(int(tam))
+                                tam = tam -1
+                            st.write('La prediccion es de : ')
+                            st.write(aux)
         elif spli[1] == '.xls':
             df = pd.read_excel(data)
             x = df.head()
